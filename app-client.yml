@@ -1,0 +1,1161 @@
+openapi: 3.0.1
+info:
+  title: Edge Cloud Client API
+  description: >-
+    # Introduction
+
+    Edge Cloud provides a set of SDKs and Libraries containing a collection of
+    operations and resources that assist in creating applications for the many
+    services offered by EdgeXR.
+
+    Once an application is built and registered, our services locate the nearest
+    cloudlet server, connecting you to one of our edge server instances.
+
+    Our services will also verify a device's location, ensuring the optimum
+    compute instance is used, and much more, once you are on the edge.
+
+    Edge Cloud MatchingEngine SDKs and Libraries are available in different
+    languages and platforms, which include Android, Unity, and iOS, allowing for
+    easy application development.
+
+    The Performance Metrics API, provided with each SDKs, tracks the average
+    latency characteristics of the edge network. To take advantage of this API,
+    you must add your application server’s Application Instance to a list of
+    sites in order to periodically ping them.
+
+    Within the left navigational menu, scroll to the desired SDK, based on your
+    preferred language or platform, to view the accompanying APIs.
+
+    To reference these APIs, including their resources and schema, click Edge
+    REST APIs.
+  version: '2.0'
+servers:
+- description: DME on EdgeCloud platform
+  url: https://global.dme.cloud.edgexr.org
+paths:
+  /v1/findcloudlet:
+    post:
+      tags:
+        - MatchEngineApi
+      summary: FindCloudlet
+      description: |-
+        Find the best application service running on a cloudlet in the
+        Edge Cloud for the client to use, based on proximity and other policies.
+      operationId: MatchEngineApi_FindCloudlet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/distributed_match_engineFindCloudletRequest'
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/distributed_match_engineFindCloudletReply'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/getappofficialfqdn:
+    post:
+      tags:
+        - MatchEngineApi
+      summary: GetAppOfficialFqdn
+      description: |-
+        Get an App's official FQDN if configured, which points to a default
+        public cloud instance of the application service that can be
+        used if no Edge Cloud application instances are available.
+      operationId: MatchEngineApi_GetAppOfficialFqdn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/distributed_match_engineAppOfficialFqdnRequest
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/distributed_match_engineAppOfficialFqdnReply
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/qosprioritysessioncreate:
+    post:
+      tags:
+        - QualityOfService
+      summary: QosPrioritySessionCreate
+      description: >-
+        Creates a QOS priority session (latency or throughput priority) from the
+        client
+
+        to the app inst by making a call to the operator's priority session API
+        server.
+      operationId: QualityOfService_QosPrioritySessionCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/distributed_match_engineQosPrioritySessionCreateRequest
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/distributed_match_engineQosPrioritySessionReply
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/qosprioritysessiondelete:
+    post:
+      tags:
+        - QualityOfService
+      summary: QosPrioritySessionDelete
+      description: >-
+        Deletes a previously created QOS priority session by making a call to
+        the operator's 
+
+        priority session API server.
+      operationId: QualityOfService_QosPrioritySessionDelete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/distributed_match_engineQosPrioritySessionDeleteRequest
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/distributed_match_engineQosPrioritySessionDeleteReply
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/registerclient:
+    post:
+      tags:
+        - Session
+      summary: RegisterClient
+      description: >-
+        Registers the client with the closest Distributed Matching Engine (the
+
+        nearest edge location in the Operator network) and validates the
+
+        legitimacy of the mobile subscriber. All session information is
+        encrypted.
+      operationId: Session_RegisterClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/distributed_match_engineRegisterClientRequest
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/distributed_match_engineRegisterClientReply
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/streamedgeevent:
+    post:
+      tags:
+        - MatchEngineApi
+      summary: StreamEdgeEvent
+      description: |-
+        Streams events bidirectionally between device client and the
+        Edge Cloud platform for notifications.
+      operationId: MatchEngineApi_StreamEdgeEvent
+      requestBody:
+        description: ' (streaming inputs)'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/distributed_match_engineClientEdgeEvent'
+        required: true
+      responses:
+        '200':
+          description: A successful response.(streaming responses)
+          content:
+            application/json:
+              schema:
+                title: Stream result of distributed_match_engineServerEdgeEvent
+                type: object
+                properties:
+                  result:
+                    $ref: >-
+                      #/components/schemas/distributed_match_engineServerEdgeEvent
+                  error:
+                    $ref: '#/components/schemas/runtimeStreamError'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+  /v1/verifylocation:
+    post:
+      tags:
+        - Location
+      summary: VerifyLocation
+      description: >-
+        Verifies that the GPS coordinates accurately report the actual location
+        of the device.
+      operationId: Location_VerifyLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/distributed_match_engineVerifyLocationRequest
+        required: true
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/distributed_match_engineVerifyLocationReply
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/runtimeError'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    AppOfficialFqdnReplyAOFStatus:
+      type: string
+      default: AOF_UNDEFINED
+      enum:
+        - AOF_UNDEFINED
+        - AOF_SUCCESS
+        - AOF_FAIL
+    ClientEdgeEventClientEventType:
+      type: string
+      default: EVENT_UNKNOWN
+      enum:
+        - EVENT_UNKNOWN
+        - EVENT_INIT_CONNECTION
+        - EVENT_TERMINATE_CONNECTION
+        - EVENT_LATENCY_SAMPLES
+        - EVENT_LOCATION_UPDATE
+        - EVENT_CUSTOM_EVENT
+    DlgMessageDlgAck:
+      title: Need acknowledgement
+      type: string
+      default: DLG_ACK_EACH_MESSAGE
+      enum:
+        - DLG_ACK_EACH_MESSAGE
+        - DLG_ASY_EVERY_N_MESSAGE
+        - DLG_NO_ACK
+    FindCloudletReplyFindStatus:
+      type: string
+      default: FIND_UNKNOWN
+      enum:
+        - FIND_UNKNOWN
+        - FIND_FOUND
+        - FIND_NOTFOUND
+    FindCloudletReplyQosSessionResult:
+      type: string
+      default: QOS_NOT_ATTEMPTED
+      enum:
+        - QOS_NOT_ATTEMPTED
+        - QOS_SESSION_CREATED
+        - QOS_SESSION_FAILED
+    QosPrioritySessionDeleteReplyDeleteStatus:
+      type: string
+      default: QDEL_UNKNOWN
+      enum:
+        - QDEL_UNKNOWN
+        - QDEL_DELETED
+        - QDEL_NOT_FOUND
+    ServerEdgeEventServerEventType:
+      type: string
+      default: EVENT_UNKNOWN
+      enum:
+        - EVENT_UNKNOWN
+        - EVENT_INIT_CONNECTION
+        - EVENT_LATENCY_REQUEST
+        - EVENT_LATENCY_PROCESSED
+        - EVENT_CLOUDLET_STATE
+        - EVENT_CLOUDLET_MAINTENANCE
+        - EVENT_APPINST_HEALTH
+        - EVENT_CLOUDLET_UPDATE
+        - EVENT_ERROR
+    VerifyLocationReplyGPSLocationStatus:
+      type: string
+      default: LOC_UNKNOWN
+      enum:
+        - LOC_UNKNOWN
+        - LOC_VERIFIED
+        - LOC_MISMATCH_SAME_COUNTRY
+        - LOC_MISMATCH_OTHER_COUNTRY
+        - LOC_ROAMING_COUNTRY_MATCH
+        - LOC_ROAMING_COUNTRY_MISMATCH
+        - LOC_ERROR_UNAUTHORIZED
+        - LOC_ERROR_OTHER
+    VerifyLocationReplyTowerStatus:
+      title: Status of the reply
+      type: string
+      default: TOWER_UNKNOWN
+      enum:
+        - TOWER_UNKNOWN
+        - CONNECTED_TO_SPECIFIED_TOWER
+        - NOT_CONNECTED_TO_SPECIFIED_TOWER
+    distributed_match_engineAppOfficialFqdnReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        app_official_fqdn:
+          title: The FQDN to which the app is reached independent of the edge
+          type: string
+        client_token:
+          title: Tokenized client data
+          type: string
+        status:
+          $ref: '#/components/schemas/AppOfficialFqdnReplyAOFStatus'
+        ports:
+          title: List of Service Endpoints for AppInst
+          type: array
+          items:
+            $ref: '#/components/schemas/distributed_match_engineAppPort'
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineAppOfficialFqdnRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_cookie:
+          title: Session Cookie from RegisterClientRequest
+          type: string
+        gps_location:
+          $ref: '#/components/schemas/distributed_match_engineLoc'
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineAppPort:
+      title: Application Port
+      type: object
+      properties:
+        proto:
+          $ref: '#/components/schemas/distributed_match_engineLProto'
+        internal_port:
+          title: Container port
+          type: integer
+          format: int32
+        public_port:
+          title: >-
+            Public facing port for TCP/UDP (may be mapped on shared LB reverse
+            proxy)
+          type: integer
+          format: int32
+        fqdn_prefix:
+          type: string
+          description: >-
+            FQDN prefix to append to base FQDN in FindCloudlet response. May be
+            empty.
+        end_port:
+          type: integer
+          description: >-
+            A non-zero end port indicates a port range from internal port to end
+            port, inclusive.
+          format: int32
+        tls:
+          title: TLS termination for this port
+          type: boolean
+        nginx:
+          title: >-
+            Use nginx proxy for this port if you really need a transparent proxy
+            (udp only)
+          type: boolean
+        max_pkt_size:
+          title: Maximum datagram size (udp only)
+          type: string
+          format: int64
+      description: >-
+        AppPort describes an L4 public access port/path mapping. This is used to
+        track external to internal mappings for access via a shared load
+        balancer or reverse proxy.
+    distributed_match_engineClientEdgeEvent:
+      title: Messages from SDK to DME
+      type: object
+      properties:
+        session_cookie:
+          title: Session Cookie from RegisterClientReply
+          type: string
+        edge_events_cookie:
+          title: Session Cookie from FindCloudletReply
+          type: string
+        event_type:
+          $ref: '#/components/schemas/ClientEdgeEventClientEventType'
+        gps_location:
+          $ref: '#/components/schemas/distributed_match_engineLoc'
+        samples:
+          title: >-
+            Latency Samples if event_type is EVENT_LATENCY_SAMPLES or
+            EVENT_CUSTOM_EVENT
+          type: array
+          items:
+            $ref: '#/components/schemas/distributed_match_engineSample'
+        device_info_static:
+          $ref: '#/components/schemas/distributed_match_engineDeviceInfoStatic'
+        device_info_dynamic:
+          $ref: '#/components/schemas/distributed_match_engineDeviceInfoDynamic'
+        custom_event:
+          title: Custom event specified by the application
+          type: string
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineCloudletState:
+      type: string
+      description: |-
+        CloudletState is the state of the Cloudlet.
+
+         - CLOUDLET_STATE_UNKNOWN: Unknown
+         - CLOUDLET_STATE_ERRORS: Create/Delete/Update encountered errors (see Errors field of CloudletInfo)
+         - CLOUDLET_STATE_READY: Cloudlet is created and ready
+         - CLOUDLET_STATE_OFFLINE: Cloudlet is offline (unreachable)
+         - CLOUDLET_STATE_NOT_PRESENT: Cloudlet is not present
+         - CLOUDLET_STATE_INIT: Cloudlet is initializing
+         - CLOUDLET_STATE_UPGRADE: Cloudlet is upgrading
+         - CLOUDLET_STATE_NEED_SYNC: Cloudlet needs data to synchronize
+      default: CLOUDLET_STATE_UNKNOWN
+      enum:
+        - CLOUDLET_STATE_UNKNOWN
+        - CLOUDLET_STATE_ERRORS
+        - CLOUDLET_STATE_READY
+        - CLOUDLET_STATE_OFFLINE
+        - CLOUDLET_STATE_NOT_PRESENT
+        - CLOUDLET_STATE_INIT
+        - CLOUDLET_STATE_UPGRADE
+        - CLOUDLET_STATE_NEED_SYNC
+    distributed_match_engineDeviceInfoDynamic:
+      title: DeviceInfoDynamic
+      type: object
+      properties:
+        data_network_type:
+          type: string
+          description: LTE, 5G, etc.
+        signal_strength:
+          title: Device signal strength
+          type: string
+          format: uint64
+        carrier_name:
+          title: Carrier name (can be different from cloudlet org if using "")
+          type: string
+    distributed_match_engineDeviceInfoStatic:
+      title: DeviceInfoStatic
+      type: object
+      properties:
+        device_os:
+          title: Android or iOS
+          type: string
+        device_model:
+          title: Device model
+          type: string
+    distributed_match_engineDlgReply:
+      type: object
+      properties:
+        ver:
+          type: integer
+          format: int64
+        ack_id:
+          title: AckId
+          type: string
+          format: uint64
+        group_cookie:
+          title: Group Cookie for Secure comm
+          type: string
+    distributed_match_engineFindCloudletReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        status:
+          $ref: '#/components/schemas/FindCloudletReplyFindStatus'
+        fqdn:
+          title: Fully Qualified Domain Name of the Closest App instance
+          type: string
+        ports:
+          title: List of Service Endpoints for AppInst
+          type: array
+          items:
+            $ref: '#/components/schemas/distributed_match_engineAppPort'
+        cloudlet_location:
+          $ref: '#/components/schemas/distributed_match_engineLoc'
+        edge_events_cookie:
+          title: Session Cookie for specific EdgeEvents for specific AppInst
+          type: string
+        qos_result:
+          $ref: '#/components/schemas/FindCloudletReplyQosSessionResult'
+        qos_error_msg:
+          title: Error message in case of QOS_SESSION_FAILED
+          type: string
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineFindCloudletRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_cookie:
+          title: Session Cookie
+          type: string
+          description: Session Cookie from RegisterClientRequest
+        carrier_name:
+          title: Carrier Name
+          type: string
+          description: >-
+            _(optional)_ By default, all SDKs will automatically fill in this
+            parameter with the MCC+MNC of your current provider. Only override
+            this parameter if you need to filter for a specific carrier on the
+            DME. The DME will filter for App instances that are associated with
+            the specified carrier.
+
+            If you wish to search for any App Instance on the DME regardless of
+            carrier name, you can input “” to consider all carriers as “Any”.
+        gps_location:
+          $ref: '#/components/schemas/distributed_match_engineLoc'
+        tags:
+          title: Tags
+          type: object
+          additionalProperties:
+            type: string
+          description: _(optional)_ Vendor specific data
+    distributed_match_engineHealthCheck:
+      title: Health check status
+      type: string
+      description: |-
+        Health check status gets set by external, or rootLB health check
+
+         - HEALTH_CHECK_UNKNOWN: Health Check is unknown
+         - HEALTH_CHECK_ROOTLB_OFFLINE: Health Check failure due to RootLB being offline
+         - HEALTH_CHECK_SERVER_FAIL: Health Check failure due to Backend server being unavailable
+         - HEALTH_CHECK_OK: Health Check is ok
+         - HEALTH_CHECK_CLOUDLET_OFFLINE: Health Check failure due to Cloudlet Offline
+      default: HEALTH_CHECK_UNKNOWN
+      enum:
+        - HEALTH_CHECK_UNKNOWN
+        - HEALTH_CHECK_ROOTLB_OFFLINE
+        - HEALTH_CHECK_SERVER_FAIL
+        - HEALTH_CHECK_OK
+        - HEALTH_CHECK_CLOUDLET_OFFLINE
+    distributed_match_engineLProto:
+      title: Layer4 Protocol
+      type: string
+      description: >-
+        LProto indicates which protocol to use for accessing an application on a
+        particular port. This is required by Kubernetes for port mapping.
+
+
+        0: `L_PROTO_UNKNOWN`
+
+        1: `L_PROTO_TCP`
+
+        2: `L_PROTO_UDP`
+
+         - L_PROTO_UNKNOWN: Unknown protocol
+         - L_PROTO_TCP: TCP (L4) protocol
+         - L_PROTO_UDP: UDP (L4) protocol
+      default: L_PROTO_UNKNOWN
+      enum:
+        - L_PROTO_UNKNOWN
+        - L_PROTO_TCP
+        - L_PROTO_UDP
+    distributed_match_engineLoc:
+      title: GPS Location
+      type: object
+      properties:
+        latitude:
+          title: Latitude in WGS 84 coordinates
+          type: number
+          format: double
+        longitude:
+          title: Longitude in WGS 84 coordinates
+          type: number
+          format: double
+        horizontal_accuracy:
+          title: Horizontal accuracy (radius in meters)
+          type: number
+          format: double
+        vertical_accuracy:
+          title: Vertical accuracy (meters)
+          type: number
+          format: double
+        altitude:
+          title: |-
+            On android only lat and long are guaranteed to be supplied
+            Altitude in meters
+          type: number
+          format: double
+        course:
+          title: >-
+            Course (IOS) / bearing (Android) (degrees east relative to true
+            north)
+          type: number
+          format: double
+        speed:
+          title: Speed (IOS) / velocity (Android) (meters/sec)
+          type: number
+          format: double
+        timestamp:
+          $ref: '#/components/schemas/distributed_match_engineTimestamp'
+    distributed_match_engineMaintenanceState:
+      title: Cloudlet Maintenance States
+      type: string
+      description: |-
+        Maintenance allows for planned downtimes of Cloudlets.
+        These states involve message exchanges between the Controller,
+        the AutoProv service, and the CRM. Certain states are only set
+        by certain actors.
+
+         - NORMAL_OPERATION: Normal operational state
+         - MAINTENANCE_START: Request start of maintenance
+         - FAILOVER_REQUESTED: Trigger failover for any HA AppInsts
+         - FAILOVER_DONE: Failover done
+         - FAILOVER_ERROR: Some errors encountered during maintenance failover
+         - MAINTENANCE_START_NO_FAILOVER: Request start of maintenance without AutoProv failover
+         - CRM_REQUESTED: Request CRM to transition to maintenance
+         - CRM_UNDER_MAINTENANCE: CRM request done and under maintenance
+         - CRM_ERROR: CRM failed to go into maintenance
+         - NORMAL_OPERATION_INIT: Request CRM to transition to normal operation
+         - UNDER_MAINTENANCE: Under maintenance
+      default: NORMAL_OPERATION
+      enum:
+        - NORMAL_OPERATION
+        - MAINTENANCE_START
+        - FAILOVER_REQUESTED
+        - FAILOVER_DONE
+        - FAILOVER_ERROR
+        - MAINTENANCE_START_NO_FAILOVER
+        - CRM_REQUESTED
+        - CRM_UNDER_MAINTENANCE
+        - CRM_ERROR
+        - NORMAL_OPERATION_INIT
+        - UNDER_MAINTENANCE
+    distributed_match_engineQosPrioritySessionCreateRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_cookie:
+          title: Session Cookie from RegisterClientRequest
+          type: string
+        session_duration:
+          title: _(optional)_ QOS Priority Session duration in seconds
+          type: integer
+          format: int64
+        ip_user_equipment:
+          title: IP address of mobile device
+          type: string
+        ip_application_server:
+          title: IP address of the application server
+          type: string
+        port_user_equipment:
+          type: string
+          description: >-
+            _(optional)_ A list of single ports or port ranges on the user
+            equipment.
+        port_application_server:
+          title: >-
+            _(optional)_ A list of single ports or port ranges on the
+            application server
+          type: string
+        protocol_in:
+          $ref: '#/components/schemas/distributed_match_engineQosSessionProtocol'
+        protocol_out:
+          $ref: '#/components/schemas/distributed_match_engineQosSessionProtocol'
+        profile:
+          $ref: '#/components/schemas/distributed_match_engineQosSessionProfile'
+        notification_uri:
+          type: string
+          description: >-
+            _(optional)_ URI of the callback receiver. Allows asynchronous
+            delivery of session related events.
+        notification_auth_token:
+          title: _(optional)_ Authentification token for callback API
+          type: string
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineQosPrioritySessionDeleteReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        status:
+          $ref: '#/components/schemas/QosPrioritySessionDeleteReplyDeleteStatus'
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineQosPrioritySessionDeleteRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_cookie:
+          title: Session Cookie from RegisterClientRequest
+          type: string
+        profile:
+          $ref: '#/components/schemas/distributed_match_engineQosSessionProfile'
+        session_id:
+          title: QOS Priority Session ID to be deleted
+          type: string
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineQosPrioritySessionReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_duration:
+          title: QOS Priority Session duration in seconds
+          type: integer
+          format: int64
+        profile:
+          $ref: '#/components/schemas/distributed_match_engineQosSessionProfile'
+        session_id:
+          title: Session ID in UUID format
+          type: string
+        started_at:
+          title: Timestamp of session start in seconds since unix epoch
+          type: integer
+          format: int64
+        expires_at:
+          title: >-
+            Timestamp of session expiration if the session was not deleted in
+            seconds since unix epoch
+          type: integer
+          format: int64
+        http_status:
+          type: integer
+          description: HTTP Status Code of call to operator's API server.
+          format: int64
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineQosSessionProfile:
+      title: |-
+        - QOS_NO_PRIORITY: Specifies that no priority session should be created
+         - QOS_LOW_LATENCY: Corresponds to a specific set of network parameters for low latency that will be 
+        negotiated with the network provider in advance
+         - QOS_THROUGHPUT_DOWN_S: Downlink traffic from AppInst to client is prioritized up to 20Mbps
+         - QOS_THROUGHPUT_DOWN_M: Downlink traffic from AppInst to client is prioritized up to 50Mbps
+         - QOS_THROUGHPUT_DOWN_L: Downlink traffic from AppInst to client is prioritized up to 100Mbps
+      type: string
+      default: QOS_NO_PRIORITY
+      enum:
+        - QOS_NO_PRIORITY
+        - QOS_LOW_LATENCY
+        - QOS_THROUGHPUT_DOWN_S
+        - QOS_THROUGHPUT_DOWN_M
+        - QOS_THROUGHPUT_DOWN_L
+    distributed_match_engineQosSessionProtocol:
+      type: string
+      default: TCP
+      enum:
+        - TCP
+        - UDP
+        - ANY
+    distributed_match_engineRegisterClientReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        status:
+          $ref: '#/components/schemas/distributed_match_engineReplyStatus'
+        session_cookie:
+          title: Session Cookie to be used in later API calls
+          type: string
+        token_server_uri:
+          title: URI for the Token Server
+          type: string
+        unique_id_type:
+          title: Unique ID Type
+          type: string
+          description: >-
+            _(optional)_ Type of unique ID provided by the server
+
+            A unique_id_type and unique_id may be provided by the client to be
+            registered.
+
+            During registering, if a unique_id_type and unique_id are provided
+            by the client in their request,
+
+            the unique_id_type and unique_id will be left blank in the response.
+
+            But, if the client does not provide a unique_id_type and unique_id,
+            then the server generates
+
+            one and provides the unique_id in the response. If possible, the
+            unique_id should be saved by the
+
+            client locally and used for subsequent RegisterClient API calls.
+            Otherwise, a new unique_id will be
+
+            generated for further API calls.
+        unique_id:
+          title: Unique ID
+          type: string
+          description: >-
+            _(optional)_ Unique identification of the client device or user
+
+            A unique_id_type and unique_id may be provided by the client to be
+            registered.
+
+            During registering, if a unique_id_type and unique_id are provided
+            by the client in their request,
+
+            the unique_id_type and unique_id will be left blank in the response.
+
+            But, if the client does not provide a unique_id_type and unique_id,
+            then the server generates
+
+            one and provides the unique_id in the response. If possible, the
+            unique_id should be saved by the
+
+            client locally and used for subsequent RegisterClient API calls.
+            Otherwise, a new unique_id will be
+
+            generated for further API calls.
+        tags:
+          title: Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+          description: _(optional)_ Array of Tags.
+    distributed_match_engineRegisterClientRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        org_name:
+          title: App Organization Name
+          type: string
+          description: App developer organization name.
+        app_name:
+          title: App Name
+          type: string
+          description: Name of your application.
+        app_vers:
+          title: App Version
+          type: string
+          description: Application version.
+        carrier_name:
+          title: Carrier Name
+          type: string
+          description: _(hidden)_ Reserved for future use
+        auth_token:
+          title: Authentication Token
+          type: string
+          description: _(optional)_ An authentication token supplied by the application.
+        unique_id_type:
+          title: Unique ID Type
+          type: string
+          description: >-
+            _(optional)_ Type of unique ID provided by the client.
+
+            If left blank, a new Unique ID type will be assigned in the
+            RegisterClient Reply.
+        unique_id:
+          title: Unique ID
+          type: string
+          description: >-
+            _(optional)_ Unique identification of the client device or user. May
+            be overridden by the server.
+
+            If left blank, a new Unique ID will be assigned in the
+            RegisterClient Reply.
+        tags:
+          title: Tags
+          type: object
+          additionalProperties:
+            type: string
+          description: _(optional)_ Vendor specific data
+    distributed_match_engineReplyStatus:
+      title: ReplyStatus
+      type: string
+      description: |-
+        - RS_UNDEFINED: Undefined status
+         - RS_SUCCESS: Successful status
+         - RS_FAIL: Failure status
+      default: RS_UNDEFINED
+      enum:
+        - RS_UNDEFINED
+        - RS_SUCCESS
+        - RS_FAIL
+    distributed_match_engineSample:
+      title: Sample
+      type: object
+      properties:
+        value:
+          title: Latency value
+          type: number
+          format: double
+        timestamp:
+          $ref: '#/components/schemas/distributed_match_engineTimestamp'
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineServerEdgeEvent:
+      title: Message from DME to SDK
+      type: object
+      properties:
+        event_type:
+          $ref: '#/components/schemas/ServerEdgeEventServerEventType'
+        cloudlet_state:
+          $ref: '#/components/schemas/distributed_match_engineCloudletState'
+        maintenance_state:
+          $ref: '#/components/schemas/distributed_match_engineMaintenanceState'
+        health_check:
+          $ref: '#/components/schemas/distributed_match_engineHealthCheck'
+        statistics:
+          $ref: '#/components/schemas/distributed_match_engineStatistics'
+        new_cloudlet:
+          $ref: '#/components/schemas/distributed_match_engineFindCloudletReply'
+        error_msg:
+          title: Error message if event_type is EVENT_ERROR
+          type: string
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineStatistics:
+      title: Statistics
+      type: object
+      properties:
+        avg:
+          title: Average
+          type: number
+          format: double
+        min:
+          title: Minimum
+          type: number
+          format: double
+        max:
+          title: Maximum
+          type: number
+          format: double
+        std_dev:
+          title: Square root of unbiased variance
+          type: number
+          format: double
+        variance:
+          title: Unbiased variance
+          type: number
+          format: double
+        num_samples:
+          title: Number of samples to create stats
+          type: string
+          format: uint64
+        timestamp:
+          $ref: '#/components/schemas/distributed_match_engineTimestamp'
+    distributed_match_engineTimestamp:
+      title: >-
+        This is a simple Timestamp message type
+
+        grpc-gateway converts google.protobuf.Timestamp into an RFC3339-type
+        string
+
+        which is a waste of a conversion, so we define our own
+      type: object
+      properties:
+        seconds:
+          title: Time in seconds since epoch
+          type: string
+          format: int64
+        nanos:
+          title: Added non-negative sub-second time in nanoseconds
+          type: integer
+          format: int32
+    distributed_match_engineVerifyLocationReply:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        tower_status:
+          $ref: '#/components/schemas/VerifyLocationReplyTowerStatus'
+        gps_location_status:
+          $ref: '#/components/schemas/VerifyLocationReplyGPSLocationStatus'
+        gps_location_accuracy_km:
+          title: |-
+            location accuracy, the location is verified to
+            be within this number of kilometers.  Negative value
+            means no verification was performed
+          type: number
+          format: double
+        tags:
+          title: _(optional)_ Vendor specific data
+          type: object
+          additionalProperties:
+            type: string
+    distributed_match_engineVerifyLocationRequest:
+      type: object
+      properties:
+        ver:
+          title: API version
+          type: integer
+          description: _(hidden)_ Reserved for future use
+          format: int64
+        session_cookie:
+          title: Session Cookie
+          type: string
+          description: Session Cookie from RegisterClientRequest
+        carrier_name:
+          title: Carrier Name
+          type: string
+          description: Unique carrier identification (typically MCC + MNC)
+        gps_location:
+          $ref: '#/components/schemas/distributed_match_engineLoc'
+        verify_loc_token:
+          title: Verify Location Token
+          type: string
+          description: Must be retrieved from TokenServerURI
+        tags:
+          title: Tags
+          type: object
+          additionalProperties:
+            type: string
+          description: _(optional)_ Vendor specific data
+    protobufAny:
+      type: object
+      properties:
+        type_url:
+          type: string
+        value:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+    runtimeError:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+    runtimeStreamError:
+      type: object
+      properties:
+        grpc_code:
+          type: integer
+          format: int32
+        http_code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        http_status:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+x-original-swagger-version: '2.0'
